@@ -68,10 +68,14 @@ public class ProtoMaker {
             }
             // Manufacturer Specific Data
             SparseArray<byte[]> msd = scanRecord.getManufacturerSpecificData();
-            for (int i = 0; i < msd.size(); i++) {
+            if(msd!=null)
+            {
+            for (int i = 0; i < msd.size(); i++) 
+               {
                 int key = msd.keyAt(i);
                 byte[] value = msd.valueAt(i);
                 a.putManufacturerData(key, ByteString.copyFrom(value));
+               }
             }
             // Service Data
             Map<ParcelUuid, byte[]> serviceData = scanRecord.getServiceData();
