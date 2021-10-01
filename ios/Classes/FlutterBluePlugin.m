@@ -506,8 +506,18 @@ typedef NS_ENUM(NSUInteger, LogLevel) {
   }
   ProtosReadDescriptorResponse *result = [[ProtosReadDescriptorResponse alloc] init];
   [result setRequest:q];
-  int value = [descriptor.value intValue];
-  [result setValue:[NSData dataWithBytes:&value length:sizeof(value)]];
+  //int value = [descriptor.value intValue];
+  //[result setValue:[NSData dataWithBytes:&value length:sizeof(value)]];
+  @try {
+    if  ([descriptor.value isKindOfClass:NSNumber.class]) {
+      int value = [descriptor.value intValue];
+      [result setValue:[NSData dataWithBytes:&value length:sizeof(value)]];
+    } else {
+      [result setValue:descriptor.value];
+    }
+  } @catch (NSException *exception) {
+    NSLog(exception.reason);
+  }
   [_channel invokeMethod:@"ReadDescriptorResponse" arguments:[self toFlutterData:result]];
 
   // If descriptor is CCCD, send a SetNotificationResponse in case anything is awaiting
@@ -709,8 +719,18 @@ typedef NS_ENUM(NSUInteger, LogLevel) {
   [result setRemoteId:[peripheral.identifier UUIDString]];
   [result setCharacteristicUuid:[descriptor.characteristic.UUID fullUUIDString]];
   [result setServiceUuid:[descriptor.characteristic.service.UUID fullUUIDString]];
-  int value = [descriptor.value intValue];
-  [result setValue:[NSData dataWithBytes:&value length:sizeof(value)]];
+  //int value = [descriptor.value intValue];
+  //[result setValue:[NSData dataWithBytes:&value length:sizeof(value)]];
+  @try {
+    if  ([descriptor.value isKindOfClass:NSNumber.class]) {
+      int value = [descriptor.value intValue];
+      [result setValue:[NSData dataWithBytes:&value length:sizeof(value)]];
+    } else {
+      [result setValue:descriptor.value];
+    }
+  } @catch (NSException *exception) {
+    NSLog(exception.reason);
+  }
   return result;
 }
 
